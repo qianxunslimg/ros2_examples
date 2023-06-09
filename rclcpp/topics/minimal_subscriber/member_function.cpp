@@ -22,10 +22,19 @@ class MinimalSubscriber : public rclcpp::Node
 {
 public:
   MinimalSubscriber()
-  : Node("minimal_subscriber")
+      : Node("minimal_subscriber")
   {
+    // // style 1
+    // subscription_ = this->create_subscription<std_msgs::msg::String>(
+    //     "topic", 10, std::bind(&MinimalSubscriber::topic_callback, this, _1));
+
+    // another style use lamda
+    auto callback = [this](const std_msgs::msg::String::SharedPtr msg)
+    {
+      this->topic_callback(msg);
+    };
     subscription_ = this->create_subscription<std_msgs::msg::String>(
-      "topic", 10, std::bind(&MinimalSubscriber::topic_callback, this, _1));
+        "topic", 10, callback);
   }
 
 private:
@@ -36,7 +45,7 @@ private:
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
 };
 
-int main(int argc, char * argv[])
+int main(int argc, char *argv[])
 {
   rclcpp::init(argc, argv);
   rclcpp::spin(std::make_shared<MinimalSubscriber>());
