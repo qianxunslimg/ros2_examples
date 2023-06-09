@@ -1,4 +1,36 @@
-ROS 2 examples
-==============
+### ROS2的架构
 
-To see some of these examples in use, visit the ROS 2 Tutorials page: https://index.ros.org/doc/ros2/Tutorials/
+ros2整体的系统架构如下：
+
+![image-20230419104808030](https://qianxunslimg.oss-cn-beijing.aliyuncs.com/img/image-20230419104808030.png)
+
+ros2的系统架构是一个分布式的实时系统架构，它由多个组件（称为节点）组成，这些组件可以是机器人中的传感器、运动控制器、检测算法、人工智能算法、导航算法等。这些组件通过DDS中间件进行数据交换，DDS是一个开放标准的通信协议，它支持去中心化的发布订阅模式。ros2的控制组织体架构可以用下图表示：
+
+<img src="https://qianxunslimg.oss-cn-beijing.aliyuncs.com/img/image-20230419104024167.png" alt="image-20230419104024167" style="zoom: 67%;" />
+
+图中的每个方框代表一个节点，每个节点可以有多个接口（称为command_interface或state_interface），用于发送或接收数据。每个接口都有一个名称和一个类型，比如position、velocity、effort等。节点之间通过话题（topic）或服务（service）进行通信，话题是一种基于发布订阅模式的异步通信方式，服务是一种基于请求响应模式的同步通信方式。ros2_control是一个用于控制机器人运动的框架，它提供了一种统一的方式来描述和管理机器人的硬件和控制器。ros2_control中有三种主要的组件类型：system、actuator和sensor。system组件代表了一个完整的机器人系统，它可以包含多个关节和传感器，并且可以提供多种类型的接口。actuator组件代表了一个单独的执行器，它只有一个关节，并且只提供一种类型的接口。sensor组件代表了一个单独的传感器，它只提供state_interface，并且不需要command_interface。ros2_control还提供了一种称为transmission的机制，用于在不同类型的接口之间进行转换，比如将position转换为effort
+
+### ROS2的特点
+
+- 基于DDS（Data Distribution Service）中间件，支持去中心化的发布订阅模式，提高了通信的实时性、可靠性、安全性和标准性
+- 支持多种操作系统和编程语言，提高了跨平台和多语言的兼容性
+- 支持多机器人协同和嵌入式系统，提高了扩展性和适应性
+- 继承了ROS1的生态系统，提供了丰富的软件库和工具集，方便了机器人的开发和测试
+
+### ROS2的概念
+
+- 节点（Node）：一个可执行程序，可以实现机器人的某个功能，比如控制、感知、规划等
+- 接口（Interface）：节点之间通信的数据类型，分为命令接口（Command Interface）和状态接口（State Interface），分别用于发送或接收数据
+- 话题（Topic）：一种基于发布订阅模式的异步通信方式，节点可以发布或订阅话题，实现数据的广播
+- 服务（Service）：一种基于请求响应模式的同步通信方式，节点可以提供或调用服务，实现数据的交互
+- 参数（Parameter）：节点的配置信息，可以在运行时动态修改
+- Action：一种基于目标驱动模式的通信方式，节点可以发送或执行Action，实现数据的反馈
+
+### ROS2的工具
+
+- ros2命令行工具：用于管理ROS2系统，包括创建、运行、停止、列出、查看节点、话题、服务、参数等
+- rviz可视化工具：用于展示机器人的模型、传感器数据、导航信息等
+- rqt图形化工具：用于监控和调试ROS2系统，包括查看日志、绘制图表、发送消息等
+- gazebo仿真工具：用于模拟机器人在真实环境中的运动和感知
+- ros2_control控制框架：用于管理机器人的硬件和控制器，提供了一种统一的方式来描述和控制机器人
+- ros2_launch启动工具：用于同时启动多个节点和设置参数
